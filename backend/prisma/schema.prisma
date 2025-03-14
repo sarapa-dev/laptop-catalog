@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model category {
+  category_id Int      @id @default(autoincrement())
+  name        String   @db.VarChar(45)
+  laptop      laptop[]
+}
+
+model display {
+  display_id                   Int          @id @default(autoincrement())
+  name                         String       @db.VarChar(45)
+  size                         Int
+  width                        Int
+  height                       Int
+  type                         display_type
+  manufacturer_manufacturer_id Int
+  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_manufacturer1")
+  laptop                       laptop[]
+
+  @@index([manufacturer_manufacturer_id], map: "fk_display_manufacturer1_idx")
+}
+
+model gpu {
+  gpu_id                       Int          @id @default(autoincrement())
+  name                         String       @db.VarChar(45)
+  vram                         Int
+  tdp                          Int
+  type                         gpu_type
+  manufacturer_manufacturer_id Int
+  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_gpu_manufacturer1")
+  laptop                       laptop[]
+
+  @@index([manufacturer_manufacturer_id], map: "fk_gpu_manufacturer1_idx")
+}
+
+model laptop {
+  laptop_id                    Int          @id
+  name                         String       @db.VarChar(45)
+  manufacturer_manufacturer_id Int
+  storage_storage_id           Int
+  processor_processor_id       Int
+  gpu_gpu_id                   Int
+  display_display_id           Int
+  category_category_id         Int
+  category                     category     @relation(fields: [category_category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
+  display                      display      @relation(fields: [display_display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
+  gpu                          gpu          @relation(fields: [gpu_gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
+  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
+  processor                    processor    @relation(fields: [processor_processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
+  storage                      storage      @relation(fields: [storage_storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
+
+  @@index([category_category_id], map: "fk_laptop_category1_idx")
+  @@index([display_display_id], map: "fk_laptop_display1_idx")
+  @@index([gpu_gpu_id], map: "fk_laptop_gpu1_idx")
+  @@index([manufacturer_manufacturer_id], map: "fk_laptop_manufacturer_idx")
+  @@index([processor_processor_id], map: "fk_laptop_processor1_idx")
+  @@index([storage_storage_id], map: "fk_laptop_storage1_idx")
+}
+
+model manufacturer {
+  manufacturer_id Int         @id @default(autoincrement())
+  name            String      @db.VarChar(45)
+  description     String?     @db.Text
+  display         display[]
+  gpu             gpu[]
+  laptop          laptop[]
+  processor       processor[]
+  storage         storage[]
+}
+
+model processor {
+  processor_id                 Int          @id @default(autoincrement())
+  name                         String       @db.VarChar(45)
+  core_count                   Int
+  tdp                          Int
+  hyper_thread_count           Int?
+  manufacturer_manufacturer_id Int
+  laptop                       laptop[]
+  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_processor_manufacturer1")
+
+  @@index([manufacturer_manufacturer_id], map: "fk_processor_manufacturer1_idx")
+}
+
+model storage {
+  storage_id                   Int          @id @default(autoincrement())
+  name                         String       @db.VarChar(45)
+  type                         storage_type
+  manufacturer_manufacturer_id Int
+  laptop                       laptop[]
+  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_storage_manufacturer1")
+
+  @@index([manufacturer_manufacturer_id], map: "fk_storage_manufacturer1_idx")
+}
+
+model user {
+  user_id  Int         @id @default(autoincrement())
+  username String      @db.VarChar(45)
+  email    String      @db.VarChar(45)
+  password String      @db.VarChar(256)
+  status   user_status
+}
+
+enum storage_type {
+  M2_SSD   @map("M2 SSD")
+  HDD
+  SATA_SSD @map("SATA SSD")
+}
+
+enum user_status {
+  NORMAL
+  ADMIN
+}
+
+enum gpu_type {
+  INTEGRATED
+  DEDICATED
+}
+
+enum display_type {
+  OLED
+  IPS
+  TN
+  WOLED
+  QD_OLED @map("QD-OLED")
+  VA
+}
