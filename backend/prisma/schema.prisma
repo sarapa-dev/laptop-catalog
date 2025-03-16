@@ -43,6 +43,7 @@ model gpu {
 model laptop {
   laptop_id                    Int          @id @default(autoincrement())
   name                         String       @db.VarChar(45)
+  image_url                    String?      @db.VarChar(255)
   manufacturer_manufacturer_id Int
   storage_storage_id           Int
   processor_processor_id       Int
@@ -127,7 +128,7 @@ enum display_type {
   OLED
   IPS
   TN
-  WOLED
+  miniLED
   QD_OLED @map("QD-OLED")
   VA
 }

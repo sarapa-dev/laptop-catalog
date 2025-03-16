@@ -59,12 +59,38 @@ export const getLaptopById = async (req: Request<{ id: string }>, res: Response)
   }
 };
 
+export const getFeaturedLaptops = async (req: Request, res: Response) => {
+  try {
+    const laptops = await prisma.laptop.findMany({
+      where: {
+        laptop_id: {
+          gte: 27,
+          lte: 31,
+        },
+      },
+      include: {
+        manufacturer: true,
+        category: true,
+        display: true,
+      },
+      orderBy: {
+        laptop_id: "desc",
+      },
+    });
+
+    res.json(laptops);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export const createLaptop = async (
   req: Request<{}, {}, Prisma.laptopCreateManyInput>,
   res: Response
 ) => {
   const {
     name,
+    image_url,
     category_category_id,
     display_display_id,
     gpu_gpu_id,
@@ -76,6 +102,7 @@ export const createLaptop = async (
   try {
     if (
       !name ||
+      !image_url ||
       !category_category_id ||
       !display_display_id ||
       !gpu_gpu_id ||
@@ -90,6 +117,7 @@ export const createLaptop = async (
     const laptop = await prisma.laptop.create({
       data: {
         name,
+        image_url,
         category: { connect: { category_id: category_category_id } },
         display: { connect: { display_id: display_display_id } },
         gpu: { connect: { gpu_id: gpu_gpu_id } },

@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import userRoute from "./routes/user.route";
 import laptopRoute from "./routes/laptop.route";
+import categoryRoute from "./routes/category.route";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use("/api/user", userRoute);
 app.use("/api/laptop", laptopRoute);
+app.use("/api/category", categoryRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
