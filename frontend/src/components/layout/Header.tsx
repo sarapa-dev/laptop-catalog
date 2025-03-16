@@ -49,7 +49,7 @@ const Header = () => {
               <Link
                 key={item.href}
                 to={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary"
+                className="font-medium transition-colors hover:text-primary"
               >
                 {item.label}
               </Link>

@@ -1,4 +1,16 @@
+import Hero from "@/components/home/Hero";
+import CategorySection from "@/components/home/CategorySection";
+import FeaturedLaptops from "@/components/home/FeaturedLaptops";
+import SpecsComparison from "@/components/home/SpecsComparison";
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <>
+      <Hero />
+      <CategorySection />
+      <FeaturedLaptops />
+      <SpecsComparison />
+    </>
+  );
 };
 export default HomePage;

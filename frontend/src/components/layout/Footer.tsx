@@ -1,6 +1,21 @@
+import { useState, useEffect } from "react";
 import { LaptopMinimal } from "lucide-react";
+import { axiosInstance } from "@/lib/axios";
+import { Link } from "react-router";
+import { CategoryType } from "@/types/category";
 
 const Footer = () => {
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const res = await axiosInstance.get<CategoryType[]>("/category");
+      setCategories(res.data);
+    };
+
+    getCategories();
+  }, []);
+
   return (
     <footer className="bg-card text-card-foreground border-t">
       <div className="container mx-auto px-4 py-12">
@@ -18,18 +33,16 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Categories</h3>
             <ul className="space-y-2">
-              {["Gaming", "Business", "Ultrabooks", "Workstations", "Budget"].map(
-                (category, index) => (
-                  <li key={index}>
-                    <a
-                      href="#"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {category}
-                    </a>
-                  </li>
-                )
-              )}
+              {categories.map(({ category_id, name }) => (
+                <li key={category_id}>
+                  <Link
+                    to={`laptops/${name.toLowerCase()}`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

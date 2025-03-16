@@ -69,9 +69,20 @@ export const getFeaturedLaptops = async (req: Request, res: Response) => {
         },
       },
       include: {
-        manufacturer: true,
         category: true,
         display: true,
+        gpu: true,
+        manufacturer: true,
+        processor: true,
+        storage: true,
+      },
+      omit: {
+        manufacturer_manufacturer_id: true,
+        storage_storage_id: true,
+        processor_processor_id: true,
+        gpu_gpu_id: true,
+        display_display_id: true,
+        category_category_id: true,
       },
       orderBy: {
         laptop_id: "desc",
