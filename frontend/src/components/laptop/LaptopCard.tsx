@@ -41,7 +41,7 @@ const LaptopCard = ({ laptop }: LaptopCardProps) => {
       </CardContent>
       <CardFooter className="border-t p-4">
         <Button className="w-full">
-          <Link to={`laptops/${laptop.laptop_id}`}>View Details</Link>
+          <Link to={`/laptops/${laptop.laptop_id}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>

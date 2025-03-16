@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "../ui/button";
 
 const Hero = () => {
@@ -10,7 +11,9 @@ const Hero = () => {
             Browse laptops by specs, prices, and features across all major brands.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg">Browse Catalog</Button>
+            <Button size="lg">
+              <Link to="laptops">Browse Catalog</Link>
+            </Button>
           </div>
         </div>
         <div className="md:w-1/2 flex justify-center">
