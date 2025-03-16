@@ -5,8 +5,8 @@ import { axiosInstance } from "./lib/axios";
 import { UserType } from "./types/user";
 import Layout from "./components/layout/Layout";
 import HomePage from "./pages/HomePage";
-import SignUpPage from "./pages/SignUpPage";
-import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/auth/SignUpPage";
+import LoginPage from "./pages/auth/LoginPage";
 
 const App = () => {
   const { data: authUser, isLoading } = useQuery({
