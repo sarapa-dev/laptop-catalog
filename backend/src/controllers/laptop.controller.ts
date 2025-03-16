@@ -64,7 +64,7 @@ export const getFeaturedLaptops = async (req: Request, res: Response) => {
     const laptops = await prisma.laptop.findMany({
       where: {
         laptop_id: {
-          gte: 27,
+          gte: 28,
           lte: 31,
         },
       },
