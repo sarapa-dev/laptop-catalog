@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { Menu } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import {
@@ -46,15 +46,20 @@ export const MobileHeader = ({
           </SheetHeader>
           <div className="flex flex-col space-y-4 mt-4 ml-2">
             {menuItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.href}
                 to={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary"
+                className={({ isActive }) =>
+                  `font-medium transition-colors hover:text-primary ${
+                    isActive ? "text-primary underline" : "text-primary"
+                  }`
+                }
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}
-              </Link>
+              </NavLink>
             ))}
+
             <div className="border-t pt-4">
               {authUser ? (
                 <>

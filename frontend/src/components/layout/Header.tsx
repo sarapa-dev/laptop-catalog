@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { ModeToggle } from "../ui/mode-toggle";
 import { Button } from "../../components/ui/button";
 import { LaptopMinimal, User } from "lucide-react";
@@ -46,13 +46,17 @@ const Header = () => {
 
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
-              <Link
+              <NavLink
                 key={item.href}
                 to={item.href}
-                className="font-medium transition-colors hover:text-primary"
+                className={({ isActive }) =>
+                  `font-medium transition-colors hover:text-primary ${
+                    isActive ? "text-primary underline" : "text-primary"
+                  }`
+                }
               >
                 {item.label}
-              </Link>
+              </NavLink>
             ))}
           </div>
 
