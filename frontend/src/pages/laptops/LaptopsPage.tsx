@@ -9,8 +9,9 @@ const LaptopsPage = () => {
   const { data: laptops, isLoading } = useQuery<LaptopType[]>({
     queryKey: ["laptop"],
     queryFn: async () => {
-      const res = await axiosInstance.get<LaptopType[]>(`laptop`);
-      return res.data;
+      const res = await axiosInstance.get(`laptop`);
+      const laptops: LaptopType[] = res.data.data;
+      return laptops;
     },
   });
 

@@ -1,29 +1,118 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { Prisma } from "@prisma/client";
+import { display_type, Prisma } from "@prisma/client";
 
-// TODO: Implement pagination with filters
-export const getAllLaptops = async (req: Request, res: Response) => {
+interface LaptopQueryParams {
+  page?: string;
+  limit?: string;
+  sort?: keyof Prisma.laptopOrderByWithRelationInput;
+  order?: "asc" | "desc";
+  name?: string;
+  category?: string;
+  manufacturer?: string;
+  gpu?: string;
+  cpu?: string;
+  storageType?: string;
+  screenSize?: string;
+  screenType?: string;
+}
+
+export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>, res: Response) => {
+  const {
+    page,
+    limit,
+    sort = "name",
+    order = "asc",
+    name,
+    category,
+    manufacturer,
+    gpu,
+    cpu,
+    storageType,
+    screenSize,
+    screenType,
+  } = req.query;
+
   try {
-    const laptops = await prisma.laptop.findMany({
-      include: {
-        category: true,
-        display: true,
-        gpu: true,
-        manufacturer: true,
-        processor: true,
-        storage: true,
-      },
-      omit: {
-        manufacturer_manufacturer_id: true,
-        storage_storage_id: true,
-        processor_processor_id: true,
-        gpu_gpu_id: true,
-        display_display_id: true,
-        category_category_id: true,
-      },
-    });
-    res.json(laptops);
+    const where: Prisma.laptopWhereInput = {
+      ...(name && { name: { contains: name } }),
+      ...(category && { category: { name: { equals: category } } }),
+      ...(manufacturer && {
+        manufacturer: { name: { equals: manufacturer } },
+      }),
+      ...(gpu && { gpu: { name: { contains: gpu } } }),
+      ...(cpu && { processor: { name: { contains: cpu } } }),
+      ...(storageType && { storage: { type: storageType as Prisma.Enumstorage_typeFilter } }),
+      ...(screenSize && { display: { size: { equals: parseInt(screenSize) } } }),
+      ...(screenType && { display: { type: screenType as display_type } }),
+    };
+
+    if (page && limit) {
+      const pageNumber = parseInt(page);
+      const limitNumber = parseInt(limit);
+      const skip = (pageNumber - 1) * limitNumber;
+
+      const [totalCount, laptops] = await prisma.$transaction([
+        prisma.laptop.count({ where }),
+        prisma.laptop.findMany({
+          where,
+          include: {
+            category: true,
+            display: true,
+            gpu: true,
+            manufacturer: true,
+            processor: true,
+            storage: true,
+          },
+          omit: {
+            manufacturer_manufacturer_id: true,
+            storage_storage_id: true,
+            processor_processor_id: true,
+            gpu_gpu_id: true,
+            display_display_id: true,
+            category_category_id: true,
+          },
+          skip,
+          take: limitNumber,
+          orderBy: { [sort]: order },
+        }),
+      ]);
+
+      res.json({
+        data: laptops,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages: Math.ceil(totalCount / limitNumber),
+          totalItems: totalCount,
+          itemsPerPage: limitNumber,
+          hasNextPage: pageNumber < Math.ceil(totalCount / limitNumber),
+          hasPreviousPage: pageNumber > 1,
+        },
+      });
+    } else {
+      const laptops = await prisma.laptop.findMany({
+        where,
+        include: {
+          category: true,
+          display: true,
+          gpu: true,
+          manufacturer: true,
+          processor: true,
+          storage: true,
+        },
+        omit: {
+          manufacturer_manufacturer_id: true,
+          storage_storage_id: true,
+          processor_processor_id: true,
+          gpu_gpu_id: true,
+          display_display_id: true,
+          category_category_id: true,
+        },
+        orderBy: { [sort]: order },
+      });
+
+      res.json({ data: laptops, pagination: null });
+    }
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
