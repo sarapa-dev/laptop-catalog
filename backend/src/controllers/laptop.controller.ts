@@ -59,6 +59,41 @@ export const getLaptopById = async (req: Request<{ id: string }>, res: Response)
   }
 };
 
+export const getLaptopsByCategory = async (req: Request<{ category: string }>, res: Response) => {
+  const { category } = req.params;
+
+  try {
+    const laptops = await prisma.laptop.findMany({
+      where: {
+        category: {
+          name: {
+            equals: category,
+          },
+        },
+      },
+      include: {
+        category: true,
+        display: true,
+        gpu: true,
+        manufacturer: true,
+        processor: true,
+        storage: true,
+      },
+      omit: {
+        manufacturer_manufacturer_id: true,
+        storage_storage_id: true,
+        processor_processor_id: true,
+        gpu_gpu_id: true,
+        display_display_id: true,
+        category_category_id: true,
+      },
+    });
+
+    res.json(laptops);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
 export const getFeaturedLaptops = async (req: Request, res: Response) => {
   try {
     const laptops = await prisma.laptop.findMany({

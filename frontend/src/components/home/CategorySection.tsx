@@ -14,7 +14,7 @@ const CategoryCard = ({ title, count, icon }: CategoryCardProps) => {
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="pt-6 flex flex-col items-center text-center">
         <div className="text-primary mb-4">{icon}</div>
-        <Link to={`/laptops/${title.toLowerCase()}`} className="text-lg font-semibold mb-2">
+        <Link to={`/categories/${title.toLowerCase()}`} className="text-lg font-semibold mb-2">
           {title}
         </Link>
       </CardContent>
@@ -25,7 +25,7 @@ const CategoryCard = ({ title, count, icon }: CategoryCardProps) => {
   );
 };
 
-const CategorySection = () => {
+const CategorySection = ({ isHome }: { isHome: boolean }) => {
   const [categories, setCategories] = useState<CategoryCardProps[]>([]);
 
   const categoryIcons: Record<string, React.ReactNode> = {
@@ -56,7 +56,7 @@ const CategorySection = () => {
   }, []);
 
   return (
-    <section className="py-16 bg-muted">
+    <section className={`py-16 ${isHome ? "bg-muted" : ""}`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Browse by Category</h2>

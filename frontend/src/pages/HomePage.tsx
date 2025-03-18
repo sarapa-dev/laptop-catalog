@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <>
       <Hero />
-      <CategorySection />
+      <CategorySection isHome />
       <FeaturedLaptops />
       <SpecsComparison />
     </>

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getAllLaptops,
   getLaptopById,
+  getLaptopsByCategory,
   getFeaturedLaptops,
   createLaptop,
 } from "../controllers/laptop.controller";
@@ -12,6 +13,7 @@ const router = Router();
 
 router.get("/", getAllLaptops);
 router.get("/featured", getFeaturedLaptops);
+router.get("/category/:category", getLaptopsByCategory);
 router.get("/:id", getLaptopById);
 
 router.post("/", protectRoute, isAdmin, createLaptop);
