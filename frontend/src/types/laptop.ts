@@ -1,7 +1,7 @@
 export interface LaptopType {
   laptop_id: number;
   name: string;
-  image_url?: string;
+  image_url: string;
   category: {
     category_id: number;
     name: string;
@@ -42,4 +42,9 @@ export interface LaptopType {
     type: string;
     manufacturer_manufacturer_id: number;
   };
+}
+
+export interface LaptopNamesType {
+  laptop_id: number;
+  name: string;
 }

@@ -2,8 +2,9 @@ import { Router } from "express";
 import {
   getAllLaptops,
   getLaptopById,
-  getLaptopsByCategory,
   getFeaturedLaptops,
+  getAllLaptopsNames,
+  getLaptopsByCategory,
   createLaptop,
 } from "../controllers/laptop.controller";
 import { protectRoute } from "../middleware/auth.middleware";
@@ -13,6 +14,7 @@ const router = Router();
 
 router.get("/", getAllLaptops);
 router.get("/featured", getFeaturedLaptops);
+router.get("/name", getAllLaptopsNames);
 router.get("/category/:category", getLaptopsByCategory);
 router.get("/:id", getLaptopById);
 

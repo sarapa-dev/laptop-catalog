@@ -59,6 +59,20 @@ export const getLaptopById = async (req: Request<{ id: string }>, res: Response)
   }
 };
 
+export const getAllLaptopsNames = async (req: Request, res: Response) => {
+  try {
+    const laptops = await prisma.laptop.findMany({
+      select: {
+        laptop_id: true,
+        name: true,
+      },
+    });
+    res.json(laptops);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 export const getLaptopsByCategory = async (req: Request<{ category: string }>, res: Response) => {
   const { category } = req.params;
 
@@ -94,6 +108,7 @@ export const getLaptopsByCategory = async (req: Request<{ category: string }>, r
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
 export const getFeaturedLaptops = async (req: Request, res: Response) => {
   try {
     const laptops = await prisma.laptop.findMany({
