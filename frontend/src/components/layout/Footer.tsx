@@ -36,7 +36,7 @@ const Footer = () => {
               {categories.map(({ category_id, name }) => (
                 <li key={category_id}>
                   <Link
-                    to={`laptops/${name.toLowerCase()}`}
+                    to={`categories/${name.toLowerCase()}`}
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {name}
@@ -51,12 +51,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {["Dell", "HP", "Lenovo", "Apple", "ASUS", "MSI", "Acer"].map((brand, index) => (
                 <li key={index}>
-                  <a
-                    href="#"
+                  <Link
+                    to="/"
                     className="text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {brand}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -68,12 +68,12 @@ const Footer = () => {
               {["Comparison Tool", "Buying Guide", "Latest Reviews", "Tech News", "Support"].map(
                 (resource, index) => (
                   <li key={index}>
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className="text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {resource}
-                    </a>
+                    </Link>
                   </li>
                 )
               )}
@@ -87,13 +87,13 @@ const Footer = () => {
           </p>
           <div className="flex space-x-6">
             {["Terms", "Privacy", "Cookies"].map((link, index) => (
-              <a
+              <Link
                 key={index}
-                href="#"
+                to="/"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link}
-              </a>
+              </Link>
             ))}
           </div>
         </div>

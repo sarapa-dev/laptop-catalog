@@ -16,6 +16,10 @@ const ComparePage = () => {
   const [isLoadingComparison, setIsLoadingComparison] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchLaptops = async () => {
       try {
         const response = await axiosInstance.get<LaptopNamesType[]>("/laptop/name");

@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "../ui/button";
 
 const SpecsComparison = () => {
@@ -25,7 +26,9 @@ const SpecsComparison = () => {
                 </li>
               ))}
             </ul>
-            <Button size="lg">Try Comparison Tool</Button>
+            <Button asChild size="lg">
+              <Link to="/compare">Try Comparison Tool</Link>
+            </Button>
           </div>
           <div className="md:w-1/2">
             <div className="bg-card p-6 rounded-xl shadow-md">

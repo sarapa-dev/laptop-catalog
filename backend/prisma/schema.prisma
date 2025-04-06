@@ -44,6 +44,7 @@ model laptop {
   laptop_id                    Int          @id @default(autoincrement())
   name                         String       @db.VarChar(45)
   image_url                    String?      @db.VarChar(255)
+  price                        Int?         @db.UnsignedInt
   manufacturer_manufacturer_id Int
   storage_storage_id           Int
   processor_processor_id       Int

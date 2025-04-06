@@ -11,15 +11,17 @@ import displayRoute from "./routes/display.route";
 import gpuRoute from "./routes/gpu.route";
 import processorRoute from "./routes/processor.route";
 import storageRoute from "./routes/storage.route";
+import paymentRoute from "./routes/payment.route";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: FRONTEND,
     credentials: true,
   })
 );
@@ -34,6 +36,7 @@ app.use("/api/dispay", displayRoute);
 app.use("/api/gpu", gpuRoute);
 app.use("/api/processor", processorRoute);
 app.use("/api/storage", storageRoute);
+app.use("/api/payment", paymentRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
