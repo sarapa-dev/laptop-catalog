@@ -37,6 +37,10 @@ const LaptopCard = ({ laptop }: LaptopCardProps) => {
             <span className="font-medium">Storage:</span>
             <span className="text-muted-foreground">{laptop?.storage.name}</span>
           </div>
+          <div className="flex justify-between">
+            <span className="font-medium">Price:</span>
+            <span className="text-primary font-semibold">${(laptop?.price / 100).toFixed(2)}</span>
+          </div>
         </div>
       </CardContent>
       <CardFooter className="border-t p-4">

@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router";
 import { ModeToggle } from "../ui/mode-toggle";
 import { Button } from "../../components/ui/button";
-import { LaptopMinimal, User } from "lucide-react";
+import { LaptopMinimal, ShoppingCart, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +14,12 @@ import { axiosInstance } from "../../lib/axios";
 import { useState } from "react";
 import { MobileHeader } from "./MobileHeader";
 import { UserType } from "../../types/user";
+import { useCartStore } from "@/store/cartStore";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
+  const totalItems = useCartStore((state) => state.totalItems());
 
   const { data: authUser } = useQuery<UserType>({ queryKey: ["authUser"] });
 
@@ -61,6 +63,16 @@ const Header = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            {authUser?.status === "ADMIN" ? (
+              <></>
+            ) : (
+              <Link to="/cart" className="relative">
+                <ShoppingCart className="size-6" />
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full size-4 text-xs flex items-center justify-center">
+                  {totalItems}
+                </span>
+              </Link>
+            )}
             <ModeToggle />
 
             <div className="hidden md:block">

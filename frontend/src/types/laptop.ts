@@ -2,6 +2,7 @@ export interface LaptopType {
   laptop_id: number;
   name: string;
   image_url: string;
+  price: number;
   category: {
     category_id: number;
     name: string;
