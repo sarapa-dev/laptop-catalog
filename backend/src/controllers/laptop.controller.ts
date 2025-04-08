@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
-import { display_type, Prisma } from "@prisma/client";
+import { display_type, Prisma, user } from "@prisma/client";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 interface LaptopQueryParams {
   page?: string;
@@ -34,6 +35,20 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
   } = req.query;
 
   try {
+    const token = req.cookies["e-catalog"];
+    let user: user | null = null;
+
+    if (token && process.env.JWT_SECRET) {
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload & {
+          userId: number;
+        };
+        user = await prisma.user.findUnique({
+          where: { user_id: decoded.userId },
+        });
+      } catch (error) {}
+    }
+
     const where: Prisma.laptopWhereInput = {
       ...(name && { name: { contains: name } }),
       ...(category && { category: { name: { equals: category } } }),
@@ -46,6 +61,22 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
       ...(screenSize && { display: { size: { equals: parseInt(screenSize) } } }),
       ...(screenType && { display: { type: screenType as display_type } }),
     };
+
+    let favoriteLaptopIds: number[] = [];
+    if (user?.status === "NORMAL") {
+      const favorites = await prisma.favorite.findMany({
+        where: { user_id: user.user_id },
+        select: { laptop_id: true },
+      });
+      favoriteLaptopIds = favorites.map((f) => f.laptop_id);
+    }
+
+    const processLaptops = (laptops: any[]) =>
+      laptops.map((laptop) => ({
+        ...laptop,
+        isFavorite:
+          user?.status === "NORMAL" ? favoriteLaptopIds.includes(laptop.laptop_id) : false,
+      }));
 
     if (page && limit) {
       const pageNumber = parseInt(page);
@@ -79,7 +110,7 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
       ]);
 
       res.json({
-        data: laptops,
+        data: processLaptops(laptops),
         pagination: {
           currentPage: pageNumber,
           totalPages: Math.ceil(totalCount / limitNumber),
@@ -111,7 +142,7 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
         orderBy: { [sort]: order },
       });
 
-      res.json({ data: laptops, pagination: null });
+      res.json({ data: processLaptops(laptops), pagination: null });
     }
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
