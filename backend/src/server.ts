@@ -12,6 +12,7 @@ import gpuRoute from "./routes/gpu.route";
 import processorRoute from "./routes/processor.route";
 import storageRoute from "./routes/storage.route";
 import paymentRoute from "./routes/payment.route";
+import favoriteRoutes from "./routes/favorite.route";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use("/api/gpu", gpuRoute);
 app.use("/api/processor", processorRoute);
 app.use("/api/storage", storageRoute);
 app.use("/api/payment", paymentRoute);
+app.use("/api/favorite", favoriteRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

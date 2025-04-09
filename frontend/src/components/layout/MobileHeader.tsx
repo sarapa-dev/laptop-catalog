@@ -73,6 +73,16 @@ export const MobileHeader = ({
                     </Link>
                   )}
 
+                  {authUser?.status === "NORMAL" && (
+                    <Link
+                      to="/favorite"
+                      className="block py-2 text-sm font-medium transition-colors hover:text-primary"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Favorite
+                    </Link>
+                  )}
+
                   <Button
                     variant="ghost"
                     className="w-full justify-start px-0"

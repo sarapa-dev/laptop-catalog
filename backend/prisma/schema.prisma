@@ -51,6 +51,7 @@ model laptop {
   gpu_gpu_id                   Int
   display_display_id           Int
   category_category_id         Int
+  favorite                     favorite[]
   category                     category     @relation(fields: [category_category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
   display                      display      @relation(fields: [display_display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
   gpu                          gpu          @relation(fields: [gpu_gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
@@ -107,6 +108,18 @@ model user {
   email    String      @db.VarChar(45)
   password String      @db.VarChar(256)
   status   user_status @default(NORMAL)
+  favorite favorite[]
+}
+
+model favorite {
+  favorite_id Int    @id @default(autoincrement())
+  user_id     Int
+  laptop_id   Int
+  laptop      laptop @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_favorite_laptop_id")
+  user        user   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_favorite_user_id")
+
+  @@index([laptop_id], map: "fk_favorite_laptop_id")
+  @@index([user_id], map: "fk_favorite_user_id")
 }
 
 enum storage_type {
