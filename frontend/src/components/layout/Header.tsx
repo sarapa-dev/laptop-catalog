@@ -89,6 +89,11 @@ const Header = () => {
                         <Link to="/add-laptop">Add Laptop</Link>
                       </DropdownMenuItem>
                     )}
+                    {authUser?.status === "NORMAL" && (
+                      <DropdownMenuItem>
+                        <Link to="/favorite">Favorite</Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => logout()}>Logout</DropdownMenuItem>
                   </DropdownMenuContent>

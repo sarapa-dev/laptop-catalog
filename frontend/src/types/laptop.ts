@@ -3,6 +3,7 @@ export interface LaptopType {
   name: string;
   image_url: string;
   price: number;
+  isFavorite?: boolean;
   category: {
     category_id: number;
     name: string;
