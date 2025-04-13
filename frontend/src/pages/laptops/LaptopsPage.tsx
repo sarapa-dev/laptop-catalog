@@ -1,18 +1,11 @@
+import { useState, useEffect } from "react";
 import { useQueryState } from "nuqs";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { ArrowDownNarrowWide, ArrowUpNarrowWide, X } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import LaptopCardSkeleton from "@/components/loaders/LaptopCardSkeleton";
 import { axiosInstance } from "@/lib/axios";
 import LaptopCard from "@/components/laptop/LaptopCard";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import FilterSheet from "@/components/laptop/FilterSheet";
 import {
   Pagination,
   PaginationContent,
@@ -22,6 +15,13 @@ import {
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
 import { LaptopType } from "@/types/laptop";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface LaptopResponse {
   data: LaptopType[];
@@ -43,6 +43,12 @@ const LaptopsPage = () => {
   const [manufacturer, setManufacturer] = useQueryState("manufacturer");
   const [screenSize, setScreenSize] = useQueryState("screenSize");
   const [storageType, setStorageType] = useQueryState("storageType");
+
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
+
+  const activeFiltersCount = [name, category, manufacturer, screenSize, storageType].filter(
+    Boolean
+  ).length;
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -104,114 +110,87 @@ const LaptopsPage = () => {
     setPage("1");
   };
 
+  const sortOptions = [
+    { label: "Price: High to Low", sort: "price", order: "desc" },
+    { label: "Price: Low to High", sort: "price", order: "asc" },
+    { label: "Name: A to Z", sort: "name", order: "asc" },
+    { label: "Name: Z to A", sort: "name", order: "desc" },
+  ];
+
   return (
     <section className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl mb-8">All Laptops</h1>
-
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-        <Input
-          placeholder="Search by name..."
-          value={name || ""}
-          onChange={(e) => setName(e.target.value || null)}
-          className="w-full sm:max-w-[200px]"
-        />
-
-        <Select value={category || ""} onValueChange={(value) => setCategory(value || null)}>
-          <SelectTrigger className="w-full sm:max-w-[200px]">
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories?.map((cat: any) => (
-              <SelectItem key={cat.category_id} value={cat.name}>
-                {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select
-          value={manufacturer || ""}
-          onValueChange={(value) => setManufacturer(value || null)}
-        >
-          <SelectTrigger className="w-full sm:max-w-[200px]">
-            <SelectValue placeholder="Select manufacturer" />
-          </SelectTrigger>
-          <SelectContent>
-            {manufacturers.map((brand) => (
-              <SelectItem key={brand} value={brand}>
-                {brand}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={screenSize || ""} onValueChange={(value) => setScreenSize(value || null)}>
-          <SelectTrigger className="w-full sm:max-w-[200px]">
-            <SelectValue placeholder="Screen size" />
-          </SelectTrigger>
-          <SelectContent>
-            {[14, 15, 16, 17].map((size) => (
-              <SelectItem key={size} value={size.toString()}>
-                {size}"
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select value={storageType || ""} onValueChange={(value) => setStorageType(value || null)}>
-          <SelectTrigger className="w-full sm:max-w-[200px]">
-            <SelectValue placeholder="Storage type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="M2_SSD">M.2 SSD</SelectItem>
-            <SelectItem value="SATA_SSD">SATA SSD</SelectItem>
-            <SelectItem value="HDD">HDD</SelectItem>
-          </SelectContent>
-        </Select>
-
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div className="flex gap-2">
-          <Button
-            variant={sort === "price" && order === "asc" ? "default" : "outline"}
-            onClick={() => {
-              setSort("price");
-              setOrder("asc");
-            }}
-          >
-            <ArrowUpNarrowWide className="mr-2 size-4" />
-            <span className="hidden md:block">Price Low to High</span>
-            <span className="block md:hidden">Price</span>
+          <Button variant="outline" onClick={() => setFilterSheetOpen(true)} className="relative">
+            <Filter className="mr-2 size-4" />
+            More Filters
+            {activeFiltersCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {activeFiltersCount}
+              </span>
+            )}
           </Button>
 
-          <Button
-            variant={sort === "price" && order === "desc" ? "default" : "outline"}
-            onClick={() => {
-              setSort("price");
-              setOrder("desc");
+          {activeFiltersCount > 0 && (
+            <Button variant="outline" onClick={resetFilters}>
+              <X className="mr-2 size-4" />
+              Clear Filters
+            </Button>
+          )}
+
+          <Select
+            value={`${sort}-${order}`}
+            onValueChange={(value) => {
+              const [newSort, newOrder] = value.split("-");
+              setSort(newSort);
+              setOrder(newOrder);
             }}
           >
-            <ArrowDownNarrowWide className="mr-2 size-4" />
-            <span className="hidden md:block">Price High to Low</span>
-            <span className="block md:hidden">Price</span>
-          </Button>
-        </div>
-        <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" onClick={resetFilters}>
-            <X className="mr-2 size-4" />
-            Reset Filters
-          </Button>
-
-          <Select value={limit} onValueChange={(value) => setLimit(value)}>
-            <SelectTrigger className="w-[80px]">
-              <SelectValue />
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="12">12</SelectItem>
-              <SelectItem value="24">24</SelectItem>
-              <SelectItem value="48">48</SelectItem>
+              {sortOptions.map((option) => (
+                <SelectItem
+                  key={`${option.sort}-${option.order}`}
+                  value={`${option.sort}-${option.order}`}
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
+
+        <Select value={limit} onValueChange={(value) => setLimit(value)}>
+          <SelectTrigger className="w-[80px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="12">12</SelectItem>
+            <SelectItem value="24">24</SelectItem>
+            <SelectItem value="48">48</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
+
+      <FilterSheet
+        open={filterSheetOpen}
+        onOpenChange={setFilterSheetOpen}
+        name={name}
+        setName={setName}
+        category={category}
+        setCategory={setCategory}
+        manufacturer={manufacturer}
+        setManufacturer={setManufacturer}
+        screenSize={screenSize}
+        setScreenSize={setScreenSize}
+        storageType={storageType}
+        setStorageType={setStorageType}
+        resetFilters={resetFilters}
+        categories={categories || []}
+        manufacturers={manufacturers}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {isLoading ? (
