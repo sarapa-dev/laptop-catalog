@@ -1,7 +1,7 @@
 import { useQueryState } from "nuqs";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { X } from "lucide-react";
+import { ArrowDownNarrowWide, ArrowUpNarrowWide, X } from "lucide-react";
 import LaptopCardSkeleton from "@/components/loaders/LaptopCardSkeleton";
 import { axiosInstance } from "@/lib/axios";
 import LaptopCard from "@/components/laptop/LaptopCard";
@@ -36,8 +36,8 @@ interface LaptopResponse {
 const LaptopsPage = () => {
   const [page, setPage] = useQueryState("page", { defaultValue: "1" });
   const [limit, setLimit] = useQueryState("limit", { defaultValue: "12" });
-  const [sort, setSort] = useQueryState("sort", { defaultValue: "name" });
-  const [order, setOrder] = useQueryState("order", { defaultValue: "asc" });
+  const [sort, setSort] = useQueryState("sort", { defaultValue: "price" });
+  const [order, setOrder] = useQueryState("order", { defaultValue: "desc" });
   const [name, setName] = useQueryState("name");
   const [category, setCategory] = useQueryState("category");
   const [manufacturer, setManufacturer] = useQueryState("manufacturer");
@@ -99,8 +99,8 @@ const LaptopsPage = () => {
     setManufacturer(null);
     setScreenSize(null);
     setStorageType(null);
-    setSort("name");
-    setOrder("asc");
+    setSort("price");
+    setOrder("desc");
     setPage("1");
   };
 
@@ -169,6 +169,31 @@ const LaptopsPage = () => {
           </SelectContent>
         </Select>
 
+        <div className="flex gap-2">
+          <Button
+            variant={sort === "price" && order === "asc" ? "default" : "outline"}
+            onClick={() => {
+              setSort("price");
+              setOrder("asc");
+            }}
+          >
+            <ArrowUpNarrowWide className="mr-2 size-4" />
+            <span className="hidden md:block">Price Low to High</span>
+            <span className="block md:hidden">Price</span>
+          </Button>
+
+          <Button
+            variant={sort === "price" && order === "desc" ? "default" : "outline"}
+            onClick={() => {
+              setSort("price");
+              setOrder("desc");
+            }}
+          >
+            <ArrowDownNarrowWide className="mr-2 size-4" />
+            <span className="hidden md:block">Price High to Low</span>
+            <span className="block md:hidden">Price</span>
+          </Button>
+        </div>
         <div className="ml-auto flex items-center gap-2">
           <Button variant="outline" onClick={resetFilters}>
             <X className="mr-2 size-4" />

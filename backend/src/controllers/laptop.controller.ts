@@ -6,6 +6,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 interface LaptopQueryParams {
   page?: string;
   limit?: string;
+  price?: string;
   sort?: keyof Prisma.laptopOrderByWithRelationInput;
   order?: "asc" | "desc";
   name?: string;
@@ -22,9 +23,10 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
   const {
     page,
     limit,
-    sort = "name",
-    order = "asc",
+    sort = "price",
+    order = "desc",
     name,
+    price,
     category,
     manufacturer,
     gpu,
@@ -51,6 +53,11 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
 
     const where: Prisma.laptopWhereInput = {
       ...(name && { name: { contains: name } }),
+      ...(price && {
+        price: {
+          equals: parseInt(price),
+        },
+      }),
       ...(category && { category: { name: { equals: category } } }),
       ...(manufacturer && {
         manufacturer: { name: { equals: manufacturer } },
