@@ -91,7 +91,12 @@ const Header = () => {
                     )}
                     {authUser?.status === "NORMAL" && (
                       <DropdownMenuItem>
-                        <Link to="/favorite">Favorite</Link>
+                        <Link to="/transactions">Transactions</Link>
+                      </DropdownMenuItem>
+                    )}
+                    {authUser?.status === "NORMAL" && (
+                      <DropdownMenuItem>
+                        <Link to="/favorites">Favorites</Link>
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuSeparator />

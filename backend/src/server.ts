@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import Stripe from "stripe";
 
 import userRoute from "./routes/user.route";
 import laptopRoute from "./routes/laptop.route";
@@ -15,6 +14,7 @@ import storageRoute from "./routes/storage.route";
 import paymentRoute from "./routes/payment.route";
 import favoriteRoutes from "./routes/favorite.route";
 import stripeRoute from "./routes/stripe.route";
+import transactionRoute from "./routes/transaction.route";
 
 dotenv.config();
 
@@ -42,6 +42,7 @@ app.use("/api/processor", processorRoute);
 app.use("/api/storage", storageRoute);
 app.use("/api/payment", paymentRoute);
 app.use("/api/favorite", favoriteRoutes);
+app.use("/api/transaction", transactionRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

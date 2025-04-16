@@ -75,11 +75,21 @@ export const MobileHeader = ({
 
                   {authUser?.status === "NORMAL" && (
                     <Link
-                      to="/favorite"
+                      to="/transactions"
                       className="block py-2 text-sm font-medium transition-colors hover:text-primary"
                       onClick={() => setIsOpen(false)}
                     >
-                      Favorite
+                      Transactions
+                    </Link>
+                  )}
+
+                  {authUser?.status === "NORMAL" && (
+                    <Link
+                      to="/favorites"
+                      className="block py-2 text-sm font-medium transition-colors hover:text-primary"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Favorites
                     </Link>
                   )}
 

@@ -16,6 +16,7 @@ import ComparePage from "./pages/ComparePage";
 import AddLaptopPage from "./pages/admin/AddLaptopPage";
 import CartPage from "./pages/auth/CartPage";
 import FavoritePage from "./pages/auth/FavoritePage";
+import TransactionPage from "./pages/auth/TransactionPage";
 
 const App = () => {
   const { data: authUser, isLoading } = useQuery({
@@ -53,8 +54,12 @@ const App = () => {
           element={authUser?.status === "NORMAL" ? <CartPage /> : <Navigate to={"/"} />}
         />
         <Route
-          path="/favorite"
+          path="/favorites"
           element={authUser?.status === "NORMAL" ? <FavoritePage /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/transactions"
+          element={authUser?.status === "NORMAL" ? <TransactionPage /> : <Navigate to={"/"} />}
         />
       </Routes>
       <Toaster />
