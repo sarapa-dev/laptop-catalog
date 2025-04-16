@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import Stripe from "stripe";
 
 import userRoute from "./routes/user.route";
 import laptopRoute from "./routes/laptop.route";
@@ -13,12 +14,14 @@ import processorRoute from "./routes/processor.route";
 import storageRoute from "./routes/storage.route";
 import paymentRoute from "./routes/payment.route";
 import favoriteRoutes from "./routes/favorite.route";
+import stripeRoute from "./routes/stripe.route";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
 const app = express();
+app.use("/api/stripe", stripeRoute);
 
 app.use(
   cors({

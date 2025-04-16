@@ -41,10 +41,10 @@ model gpu {
 }
 
 model laptop {
-  laptop_id                    Int          @id @default(autoincrement())
-  name                         String       @db.VarChar(45)
-  image_url                    String?      @db.VarChar(255)
-  price                        Int?         @db.UnsignedInt
+  laptop_id                    Int                @id @default(autoincrement())
+  name                         String             @db.VarChar(45)
+  image_url                    String?            @db.VarChar(255)
+  price                        Int?               @db.UnsignedInt
   manufacturer_manufacturer_id Int
   storage_storage_id           Int
   processor_processor_id       Int
@@ -52,12 +52,13 @@ model laptop {
   display_display_id           Int
   category_category_id         Int
   favorite                     favorite[]
-  category                     category     @relation(fields: [category_category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
-  display                      display      @relation(fields: [display_display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
-  gpu                          gpu          @relation(fields: [gpu_gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
-  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
-  processor                    processor    @relation(fields: [processor_processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
-  storage                      storage      @relation(fields: [storage_storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
+  category                     category           @relation(fields: [category_category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
+  display                      display            @relation(fields: [display_display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
+  gpu                          gpu                @relation(fields: [gpu_gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
+  manufacturer                 manufacturer       @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
+  processor                    processor          @relation(fields: [processor_processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
+  storage                      storage            @relation(fields: [storage_storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
+  transaction_item             transaction_item[]
 
   @@index([category_category_id], map: "fk_laptop_category1_idx")
   @@index([display_display_id], map: "fk_laptop_display1_idx")
@@ -103,12 +104,13 @@ model storage {
 }
 
 model user {
-  user_id  Int         @id @default(autoincrement())
-  username String      @db.VarChar(45)
-  email    String      @db.VarChar(45)
-  password String      @db.VarChar(256)
-  status   user_status @default(NORMAL)
-  favorite favorite[]
+  user_id     Int           @id @default(autoincrement())
+  username    String        @db.VarChar(45)
+  email       String        @db.VarChar(45)
+  password    String        @db.VarChar(256)
+  status      user_status   @default(NORMAL)
+  favorite    favorite[]
+  transaction transaction[]
 }
 
 model favorite {
@@ -120,6 +122,31 @@ model favorite {
 
   @@index([laptop_id], map: "fk_favorite_laptop_id")
   @@index([user_id], map: "fk_favorite_user_id")
+}
+
+model transaction {
+  transaction_id   Int                @id @default(autoincrement())
+  user_id          Int
+  total_amount     Int
+  created_at       DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
+  user             user               @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_user_id")
+  transaction_item transaction_item[]
+
+  @@index([user_id], map: "fk_transaction_user_id")
+}
+
+model transaction_item {
+  transaction_item_id Int         @id @default(autoincrement())
+  transaction_id      Int
+  laptop_id           Int
+  laptop_price        Int
+  laptop_name         String      @db.VarChar(255)
+  laptop_category     String      @db.VarChar(255)
+  laptop              laptop      @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_item_laptop_id")
+  transaction         transaction @relation(fields: [transaction_id], references: [transaction_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_item_transaction_id")
+
+  @@index([laptop_id], map: "fk_transaction_item_laptop_id")
+  @@index([transaction_id], map: "fk_transaction_item_transaction_id")
 }
 
 enum storage_type {

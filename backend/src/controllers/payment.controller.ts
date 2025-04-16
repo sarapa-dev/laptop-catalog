@@ -8,18 +8,6 @@ interface CartItem {
   quantity: number;
 }
 
-interface StripeItem {
-  price_data: {
-    currency: string;
-    product_data: {
-      name: string;
-      metadata: { laptop_id: string };
-    };
-    unit_amount: number;
-  };
-  quantity: number;
-}
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export const checkoutStripe = async (req: Request, res: Response) => {
@@ -29,29 +17,36 @@ export const checkoutStripe = async (req: Request, res: Response) => {
 
     if (!items?.length) throw new Error("Cart is empty");
 
-    const lineItems: StripeItem[] = [];
+    const laptops = await prisma.laptop.findMany({
+      where: {
+        laptop_id: { in: items.map((i) => i.laptop_id) },
+      },
+      select: {
+        laptop_id: true,
+        name: true,
+        price: true,
+        manufacturer: true,
+        category: true,
+      },
+    });
 
-    for (const item of items) {
-      const laptop = await prisma.laptop.findUnique({
-        where: { laptop_id: item.laptop_id },
-        select: { price: true, name: true },
-      });
-
-      if (!laptop?.price) throw new Error(`Invalid laptop ID: ${item.laptop_id}`);
-      if (item.quantity < 1) throw new Error(`Invalid quantity for laptop ${item.laptop_id}`);
-
-      lineItems.push({
+    const lineItems = laptops.map((laptop) => {
+      const quantity = items.find((i) => i.laptop_id === laptop.laptop_id)?.quantity || 1;
+      return {
         price_data: {
           currency: process.env.STRIPE_CURRENCY!,
           product_data: {
             name: laptop.name,
-            metadata: { laptop_id: item.laptop_id.toString() },
+            metadata: {
+              laptop_id: laptop.laptop_id.toString(),
+              category: laptop.category.name,
+            },
           },
-          unit_amount: laptop.price,
+          unit_amount: laptop.price!,
         },
-        quantity: item.quantity,
-      });
-    }
+        quantity,
+      };
+    });
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -61,6 +56,7 @@ export const checkoutStripe = async (req: Request, res: Response) => {
       cancel_url: process.env.FRONTEND_URL,
       metadata: {
         user_id: currentUser.user_id.toString(),
+        laptop_ids: JSON.stringify(laptops.map((l) => l.laptop_id)),
       },
     });
 
