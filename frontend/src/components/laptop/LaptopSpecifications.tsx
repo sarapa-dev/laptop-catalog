@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LaptopType } from "@/types/laptop";
 import { Microchip, Cpu, HardDrive, Monitor } from "lucide-react";
+import LaptopReviews from "./LaptopReviews";
 
 type LaptopSpecificationsProps = {
   laptop: LaptopType;
@@ -14,11 +15,11 @@ const LaptopSpecifications = ({ laptop }: LaptopSpecificationsProps) => {
         <TabsList className="mb-6">
           <TabsTrigger value="specs">Specifications</TabsTrigger>
           <TabsTrigger value="manufacturer">Manufacturer</TabsTrigger>
+          <TabsTrigger value="reviews">Reviews</TabsTrigger>
         </TabsList>
 
         <TabsContent value="specs">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Processor */}
             <SpecCard
               title="Processor"
               icon={<Cpu className="h-5 w-5" />}
@@ -82,6 +83,14 @@ const LaptopSpecifications = ({ laptop }: LaptopSpecificationsProps) => {
             </CardHeader>
             <CardContent>
               <p>{laptop.manufacturer.description || "No description available."}</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="reviews">
+          <Card>
+            <CardContent>
+              <LaptopReviews laptopId={laptop.laptop_id} />
             </CardContent>
           </Card>
         </TabsContent>

@@ -58,6 +58,7 @@ model laptop {
   manufacturer                 manufacturer       @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
   processor                    processor          @relation(fields: [processor_processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
   storage                      storage            @relation(fields: [storage_storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
+  review                       review[]
   transaction_item             transaction_item[]
 
   @@index([category_category_id], map: "fk_laptop_category1_idx")
@@ -110,6 +111,7 @@ model user {
   password    String        @db.VarChar(256)
   status      user_status   @default(NORMAL)
   favorite    favorite[]
+  review      review[]
   transaction transaction[]
 }
 
@@ -147,6 +149,20 @@ model transaction_item {
 
   @@index([laptop_id], map: "fk_transaction_item_laptop_id")
   @@index([transaction_id], map: "fk_transaction_item_transaction_id")
+}
+
+model review {
+  review_id  Int      @id @default(autoincrement())
+  user_id    Int
+  laptop_id  Int
+  rating     Int      @db.UnsignedInt
+  comment    String   @db.VarChar(255)
+  created_at DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
+  laptop     laptop   @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_laptop_id")
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_user_id")
+
+  @@index([laptop_id], map: "fk_review_laptop_id")
+  @@index([user_id], map: "fk_review_user_id")
 }
 
 enum storage_type {
