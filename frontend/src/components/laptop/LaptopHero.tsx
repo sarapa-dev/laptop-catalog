@@ -98,7 +98,14 @@ const LaptopHero = ({ laptop }: LaptopHeroProps) => {
               <ShoppingCart className="mr-2 size-4" />
               Add to cart
             </Button>
-            <Button variant="outline" className="flex-1 cursor-pointer">
+            <Button
+              variant="outline"
+              className="flex-1 cursor-pointer"
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                toast.success("Link copied to clipboard!");
+              }}
+            >
               <Share2 className="mr-2 size-4" />
               Share
             </Button>
