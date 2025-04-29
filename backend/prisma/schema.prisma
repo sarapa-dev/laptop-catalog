@@ -14,59 +14,59 @@ model category {
 }
 
 model display {
-  display_id                   Int          @id @default(autoincrement())
-  name                         String       @db.VarChar(45)
-  size                         Int
-  width                        Int
-  height                       Int
-  type                         display_type
-  manufacturer_manufacturer_id Int
-  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_manufacturer1")
-  laptop                       laptop[]
+  display_id      Int          @id @default(autoincrement())
+  manufacturer_id Int
+  name            String       @db.VarChar(45)
+  size            Int
+  width           Int
+  height          Int
+  type            display_type
+  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_manufacturer1")
+  laptop          laptop[]
 
-  @@index([manufacturer_manufacturer_id], map: "fk_display_manufacturer1_idx")
+  @@index([manufacturer_id], map: "fk_display_manufacturer_id")
 }
 
 model gpu {
-  gpu_id                       Int          @id @default(autoincrement())
-  name                         String       @db.VarChar(45)
-  vram                         Int
-  tdp                          Int
-  type                         gpu_type
-  manufacturer_manufacturer_id Int
-  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_gpu_manufacturer1")
-  laptop                       laptop[]
+  gpu_id          Int          @id @default(autoincrement())
+  manufacturer_id Int
+  name            String       @db.VarChar(45)
+  vram            Int
+  tdp             Int
+  type            gpu_type
+  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_gpu_manufacturer1")
+  laptop          laptop[]
 
-  @@index([manufacturer_manufacturer_id], map: "fk_gpu_manufacturer1_idx")
+  @@index([manufacturer_id], map: "fk_gpu_manufacturer_id")
 }
 
 model laptop {
-  laptop_id                    Int                @id @default(autoincrement())
-  name                         String             @db.VarChar(45)
-  image_url                    String?            @db.VarChar(255)
-  price                        Int?               @db.UnsignedInt
-  manufacturer_manufacturer_id Int
-  storage_storage_id           Int
-  processor_processor_id       Int
-  gpu_gpu_id                   Int
-  display_display_id           Int
-  category_category_id         Int
-  favorite                     favorite[]
-  category                     category           @relation(fields: [category_category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
-  display                      display            @relation(fields: [display_display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
-  gpu                          gpu                @relation(fields: [gpu_gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
-  manufacturer                 manufacturer       @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
-  processor                    processor          @relation(fields: [processor_processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
-  storage                      storage            @relation(fields: [storage_storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
-  review                       review[]
-  transaction_item             transaction_item[]
+  laptop_id        Int                @id @default(autoincrement())
+  manufacturer_id  Int
+  storage_id       Int
+  processor_id     Int
+  gpu_id           Int
+  display_id       Int
+  category_id      Int
+  name             String             @db.VarChar(45)
+  image_url        String?            @db.VarChar(255)
+  price            Int?               @db.UnsignedInt
+  favorite         favorite[]
+  category         category           @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
+  display          display            @relation(fields: [display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
+  gpu              gpu                @relation(fields: [gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
+  manufacturer     manufacturer       @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
+  processor        processor          @relation(fields: [processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
+  storage          storage            @relation(fields: [storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
+  review           review[]
+  transaction_item transaction_item[]
 
-  @@index([category_category_id], map: "fk_laptop_category1_idx")
-  @@index([display_display_id], map: "fk_laptop_display1_idx")
-  @@index([gpu_gpu_id], map: "fk_laptop_gpu1_idx")
-  @@index([manufacturer_manufacturer_id], map: "fk_laptop_manufacturer_idx")
-  @@index([processor_processor_id], map: "fk_laptop_processor1_idx")
-  @@index([storage_storage_id], map: "fk_laptop_storage1_idx")
+  @@index([category_id], map: "fk_laptop_category_id")
+  @@index([display_id], map: "fk_laptop_display_id")
+  @@index([gpu_id], map: "fk_laptop_gpu_id")
+  @@index([manufacturer_id], map: "fk_laptop_manufacturer_id")
+  @@index([processor_id], map: "fk_laptop_processor_id")
+  @@index([storage_id], map: "fk_laptop_storage_id")
 }
 
 model manufacturer {
@@ -81,27 +81,27 @@ model manufacturer {
 }
 
 model processor {
-  processor_id                 Int          @id @default(autoincrement())
-  name                         String       @db.VarChar(45)
-  core_count                   Int
-  tdp                          Int
-  hyper_thread_count           Int?
-  manufacturer_manufacturer_id Int
-  laptop                       laptop[]
-  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_processor_manufacturer1")
+  processor_id       Int          @id @default(autoincrement())
+  manufacturer_id    Int
+  name               String       @db.VarChar(45)
+  core_count         Int
+  tdp                Int
+  hyper_thread_count Int?
+  laptop             laptop[]
+  manufacturer       manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_processor_manufacturer1")
 
-  @@index([manufacturer_manufacturer_id], map: "fk_processor_manufacturer1_idx")
+  @@index([manufacturer_id], map: "fk_processor_manufacturer_id")
 }
 
 model storage {
-  storage_id                   Int          @id @default(autoincrement())
-  name                         String       @db.VarChar(45)
-  type                         storage_type
-  manufacturer_manufacturer_id Int
-  laptop                       laptop[]
-  manufacturer                 manufacturer @relation(fields: [manufacturer_manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_storage_manufacturer1")
+  storage_id      Int          @id @default(autoincrement())
+  manufacturer_id Int
+  name            String       @db.VarChar(45)
+  type            storage_type
+  laptop          laptop[]
+  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_storage_manufacturer1")
 
-  @@index([manufacturer_manufacturer_id], map: "fk_storage_manufacturer1_idx")
+  @@index([manufacturer_id], map: "fk_storage_manufacturer_id")
 }
 
 model user {

@@ -103,12 +103,12 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
             storage: true,
           },
           omit: {
-            manufacturer_manufacturer_id: true,
-            storage_storage_id: true,
-            processor_processor_id: true,
-            gpu_gpu_id: true,
-            display_display_id: true,
-            category_category_id: true,
+            manufacturer_id: true,
+            storage_id: true,
+            processor_id: true,
+            gpu_id: true,
+            display_id: true,
+            category_id: true,
           },
           skip,
           take: limitNumber,
@@ -139,12 +139,12 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
           storage: true,
         },
         omit: {
-          manufacturer_manufacturer_id: true,
-          storage_storage_id: true,
-          processor_processor_id: true,
-          gpu_gpu_id: true,
-          display_display_id: true,
-          category_category_id: true,
+          manufacturer_id: true,
+          storage_id: true,
+          processor_id: true,
+          gpu_id: true,
+          display_id: true,
+          category_id: true,
         },
         orderBy: { [sort]: order },
       });
@@ -171,12 +171,12 @@ export const getLaptopById = async (req: Request<{ id: string }>, res: Response)
         storage: true,
       },
       omit: {
-        manufacturer_manufacturer_id: true,
-        storage_storage_id: true,
-        processor_processor_id: true,
-        gpu_gpu_id: true,
-        display_display_id: true,
-        category_category_id: true,
+        manufacturer_id: true,
+        storage_id: true,
+        processor_id: true,
+        gpu_id: true,
+        display_id: true,
+        category_id: true,
       },
     });
 
@@ -221,12 +221,12 @@ export const getLaptopsByCategory = async (req: Request<{ category: string }>, r
         storage: true,
       },
       omit: {
-        manufacturer_manufacturer_id: true,
-        storage_storage_id: true,
-        processor_processor_id: true,
-        gpu_gpu_id: true,
-        display_display_id: true,
-        category_category_id: true,
+        manufacturer_id: true,
+        storage_id: true,
+        processor_id: true,
+        gpu_id: true,
+        display_id: true,
+        category_id: true,
       },
     });
 
@@ -254,12 +254,12 @@ export const getFeaturedLaptops = async (req: Request, res: Response) => {
         storage: true,
       },
       omit: {
-        manufacturer_manufacturer_id: true,
-        storage_storage_id: true,
-        processor_processor_id: true,
-        gpu_gpu_id: true,
-        display_display_id: true,
-        category_category_id: true,
+        manufacturer_id: true,
+        storage_id: true,
+        processor_id: true,
+        gpu_id: true,
+        display_id: true,
+        category_id: true,
       },
       orderBy: {
         laptop_id: "desc",
@@ -279,24 +279,24 @@ export const createLaptop = async (
   const {
     name,
     image_url,
-    category_category_id,
-    display_display_id,
-    gpu_gpu_id,
-    manufacturer_manufacturer_id,
-    processor_processor_id,
-    storage_storage_id,
+    category_id,
+    display_id,
+    gpu_id,
+    manufacturer_id,
+    processor_id,
+    storage_id,
   } = req.body;
 
   try {
     if (
       !name ||
       !image_url ||
-      !category_category_id ||
-      !display_display_id ||
-      !gpu_gpu_id ||
-      !manufacturer_manufacturer_id ||
-      !processor_processor_id ||
-      !storage_storage_id
+      !category_id ||
+      !display_id ||
+      !gpu_id ||
+      !manufacturer_id ||
+      !processor_id ||
+      !storage_id
     ) {
       res.status(400).json({ message: "You must fill all fields" });
       return;
@@ -306,12 +306,12 @@ export const createLaptop = async (
       data: {
         name,
         image_url,
-        category: { connect: { category_id: category_category_id } },
-        display: { connect: { display_id: display_display_id } },
-        gpu: { connect: { gpu_id: gpu_gpu_id } },
-        manufacturer: { connect: { manufacturer_id: manufacturer_manufacturer_id } },
-        processor: { connect: { processor_id: processor_processor_id } },
-        storage: { connect: { storage_id: storage_storage_id } },
+        category: { connect: { category_id: category_id } },
+        display: { connect: { display_id: display_id } },
+        gpu: { connect: { gpu_id: gpu_id } },
+        manufacturer: { connect: { manufacturer_id: manufacturer_id } },
+        processor: { connect: { processor_id: processor_id } },
+        storage: { connect: { storage_id: storage_id } },
       },
     });
 

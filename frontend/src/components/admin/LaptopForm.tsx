@@ -19,22 +19,22 @@ import SelectField from "./SelectField";
 const formSchema = z.object({
   name: z.string().min(5, "Name must be at least 5 characters"),
   image_url: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
-  manufacturer_manufacturer_id: z.number({
+  manufacturer_id: z.number({
     required_error: "Please select a manufacturer",
   }),
-  storage_storage_id: z.number({
+  storage_id: z.number({
     required_error: "Please select a storage option",
   }),
-  processor_processor_id: z.number({
+  processor_id: z.number({
     required_error: "Please select a processor",
   }),
-  gpu_gpu_id: z.number({
+  gpu_id: z.number({
     required_error: "Please select a GPU",
   }),
-  display_display_id: z.number({
+  display_id: z.number({
     required_error: "Please select a display",
   }),
-  category_category_id: z.number({
+  category_id: z.number({
     required_error: "Please select a category",
   }),
 });
@@ -154,7 +154,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <SelectField
             form={form}
-            name="manufacturer_manufacturer_id"
+            name="manufacturer_id"
             label="Manufacturer"
             placeholder="Select manufacturer"
             options={manufacturers || []}
@@ -165,7 +165,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
 
           <SelectField
             form={form}
-            name="category_category_id"
+            name="category_id"
             label="Category"
             placeholder="Select category"
             options={categories || []}
@@ -176,7 +176,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
 
           <SelectField
             form={form}
-            name="processor_processor_id"
+            name="processor_id"
             label="Processor"
             placeholder="Select processor"
             options={processors || []}
@@ -187,7 +187,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
 
           <SelectField
             form={form}
-            name="gpu_gpu_id"
+            name="gpu_id"
             label="GPU"
             placeholder="Select GPU"
             options={gpus || []}
@@ -198,7 +198,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
 
           <SelectField
             form={form}
-            name="display_display_id"
+            name="display_id"
             label="Display"
             placeholder="Select display"
             options={displays || []}
@@ -209,7 +209,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
 
           <SelectField
             form={form}
-            name="storage_storage_id"
+            name="storage_id"
             label="Storage"
             placeholder="Select storage"
             options={storageOptions || []}

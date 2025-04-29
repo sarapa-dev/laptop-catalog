@@ -27,7 +27,7 @@ const LaptopSpecifications = ({ laptop }: LaptopSpecificationsProps) => {
                 { label: "Model", value: laptop.processor.name },
                 {
                   label: "Manufacturer",
-                  value: laptop.processor.manufacturer_manufacturer_id === 1 ? "AMD" : "Intel",
+                  value: laptop.processor.manufacturer_id === 1 ? "AMD" : "Intel",
                 },
                 { label: "Cores", value: `${laptop.processor.core_count} cores` },
                 { label: "Threads", value: `${laptop.processor.hyper_thread_count} threads` },
@@ -42,7 +42,7 @@ const LaptopSpecifications = ({ laptop }: LaptopSpecificationsProps) => {
                 { label: "Model", value: laptop.gpu.name },
                 {
                   label: "Manufacturer",
-                  value: laptop.gpu.manufacturer_manufacturer_id === 2 ? "NVIDIA" : "AMD",
+                  value: laptop.gpu.manufacturer_id === 2 ? "NVIDIA" : "AMD",
                 },
                 { label: "VRAM", value: `${laptop.gpu.vram}GB` },
                 { label: "Type", value: laptop.gpu.type },

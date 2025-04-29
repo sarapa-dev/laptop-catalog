@@ -15,7 +15,7 @@ export interface LaptopType {
     width: number;
     height: number;
     type: string;
-    manufacturer_manufacturer_id: number;
+    manufacturer_id: number;
   };
   gpu: {
     gpu_id: number;
@@ -23,7 +23,7 @@ export interface LaptopType {
     vram: number;
     tdp: number;
     type: string;
-    manufacturer_manufacturer_id: number;
+    manufacturer_id: number;
   };
   manufacturer: {
     manufacturer_id: number;
@@ -36,13 +36,13 @@ export interface LaptopType {
     core_count: number;
     tdp: number;
     hyper_thread_count: number;
-    manufacturer_manufacturer_id: number;
+    manufacturer_id: number;
   };
   storage: {
     storage_id: number;
     name: string;
     type: string;
-    manufacturer_manufacturer_id: number;
+    manufacturer_id: number;
   };
 }
 
