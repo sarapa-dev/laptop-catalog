@@ -92,7 +92,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
   const { data: displays, isLoading: isLoadingDisplays } = useQuery({
     queryKey: ["displays"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/dispay");
+      const res = await axiosInstance.get("/display");
       return res.data;
     },
   });

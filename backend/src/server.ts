@@ -37,7 +37,7 @@ app.use("/api/user", userRoute);
 app.use("/api/laptop", laptopRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/manufacturer", manufacturerRoute);
-app.use("/api/dispay", displayRoute);
+app.use("/api/display", displayRoute);
 app.use("/api/gpu", gpuRoute);
 app.use("/api/processor", processorRoute);
 app.use("/api/storage", storageRoute);
