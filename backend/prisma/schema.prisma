@@ -8,14 +8,14 @@ datasource db {
 }
 
 model category {
-  category_id Int      @id @default(autoincrement())
+  category_id Int      @id @default(autoincrement()) @db.UnsignedInt
   name        String   @db.VarChar(45)
   laptop      laptop[]
 }
 
 model display {
-  display_id      Int          @id @default(autoincrement())
-  manufacturer_id Int
+  display_id      Int          @id @default(autoincrement()) @db.UnsignedInt
+  manufacturer_id Int          @db.UnsignedInt
   name            String       @db.VarChar(45)
   size            Int
   width           Int
@@ -28,8 +28,8 @@ model display {
 }
 
 model gpu {
-  gpu_id          Int          @id @default(autoincrement())
-  manufacturer_id Int
+  gpu_id          Int          @id @default(autoincrement()) @db.UnsignedInt
+  manufacturer_id Int          @db.UnsignedInt
   name            String       @db.VarChar(45)
   vram            Int
   tdp             Int
@@ -41,13 +41,13 @@ model gpu {
 }
 
 model laptop {
-  laptop_id        Int                @id @default(autoincrement())
-  manufacturer_id  Int
-  storage_id       Int
-  processor_id     Int
-  gpu_id           Int
-  display_id       Int
-  category_id      Int
+  laptop_id        Int                @id @default(autoincrement()) @db.UnsignedInt
+  manufacturer_id  Int                @db.UnsignedInt
+  storage_id       Int                @db.UnsignedInt
+  processor_id     Int                @db.UnsignedInt
+  gpu_id           Int                @db.UnsignedInt
+  display_id       Int                @db.UnsignedInt
+  category_id      Int                @db.UnsignedInt
   name             String             @db.VarChar(45)
   image_url        String?            @db.VarChar(255)
   price            Int?               @db.UnsignedInt
@@ -70,7 +70,7 @@ model laptop {
 }
 
 model manufacturer {
-  manufacturer_id Int         @id @default(autoincrement())
+  manufacturer_id Int         @id @default(autoincrement()) @db.UnsignedInt
   name            String      @db.VarChar(45)
   description     String?     @db.Text
   display         display[]
@@ -81,8 +81,8 @@ model manufacturer {
 }
 
 model processor {
-  processor_id       Int          @id @default(autoincrement())
-  manufacturer_id    Int
+  processor_id       Int          @id @default(autoincrement()) @db.UnsignedInt
+  manufacturer_id    Int          @db.UnsignedInt
   name               String       @db.VarChar(45)
   core_count         Int
   tdp                Int
@@ -94,8 +94,8 @@ model processor {
 }
 
 model storage {
-  storage_id      Int          @id @default(autoincrement())
-  manufacturer_id Int
+  storage_id      Int          @id @default(autoincrement()) @db.UnsignedInt
+  manufacturer_id Int          @db.UnsignedInt
   name            String       @db.VarChar(45)
   type            storage_type
   laptop          laptop[]
@@ -105,7 +105,7 @@ model storage {
 }
 
 model user {
-  user_id     Int           @id @default(autoincrement())
+  user_id     Int           @id @default(autoincrement()) @db.UnsignedInt
   username    String        @db.VarChar(45)
   email       String        @db.VarChar(45)
   password    String        @db.VarChar(256)
@@ -116,9 +116,9 @@ model user {
 }
 
 model favorite {
-  favorite_id Int    @id @default(autoincrement())
-  user_id     Int
-  laptop_id   Int
+  favorite_id Int    @id @default(autoincrement()) @db.UnsignedInt
+  user_id     Int    @db.UnsignedInt
+  laptop_id   Int    @db.UnsignedInt
   laptop      laptop @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_favorite_laptop_id")
   user        user   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_favorite_user_id")
 
@@ -127,8 +127,8 @@ model favorite {
 }
 
 model transaction {
-  transaction_id   Int                @id @default(autoincrement())
-  user_id          Int
+  transaction_id   Int                @id @default(autoincrement()) @db.UnsignedInt
+  user_id          Int                @db.UnsignedInt
   total_amount     Int
   created_at       DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
   user             user               @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_user_id")
@@ -138,9 +138,9 @@ model transaction {
 }
 
 model transaction_item {
-  transaction_item_id Int         @id @default(autoincrement())
-  transaction_id      Int
-  laptop_id           Int
+  transaction_item_id Int         @id @default(autoincrement()) @db.UnsignedInt
+  transaction_id      Int         @db.UnsignedInt
+  laptop_id           Int         @db.UnsignedInt
   laptop_price        Int
   laptop_name         String      @db.VarChar(255)
   laptop_category     String      @db.VarChar(255)
@@ -152,9 +152,9 @@ model transaction_item {
 }
 
 model review {
-  review_id  Int      @id @default(autoincrement())
-  user_id    Int
-  laptop_id  Int
+  review_id  Int      @id @default(autoincrement()) @db.UnsignedInt
+  user_id    Int      @db.UnsignedInt
+  laptop_id  Int      @db.UnsignedInt
   rating     Int      @db.UnsignedInt
   comment    String   @db.VarChar(255)
   created_at DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
