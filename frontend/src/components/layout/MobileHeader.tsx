@@ -73,7 +73,7 @@ export const MobileHeader = ({
                     </Link>
                   )}
 
-                  {authUser?.status === "NORMAL" && (
+                  {authUser?.status === "CUSTOMER" && (
                     <Link
                       to="/transactions"
                       className="block py-2 text-sm font-medium transition-colors hover:text-primary"
@@ -83,7 +83,7 @@ export const MobileHeader = ({
                     </Link>
                   )}
 
-                  {authUser?.status === "NORMAL" && (
+                  {authUser?.status === "CUSTOMER" && (
                     <Link
                       to="/favorites"
                       className="block py-2 text-sm font-medium transition-colors hover:text-primary"

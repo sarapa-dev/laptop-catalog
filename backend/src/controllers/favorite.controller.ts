@@ -11,8 +11,8 @@ export const addFavorite = async (req: AuthRequest, res: Response) => {
     const user = req.user!;
     const { laptop_id } = req.body;
 
-    if (user.status !== "NORMAL") {
-      res.status(403).json({ error: "Only normal users can add favorites" });
+    if (user.status !== "CUSTOMER") {
+      res.status(403).json({ error: "Only customers can add favorites" });
       return;
     }
 
@@ -56,8 +56,8 @@ export const removeFavorite = async (req: AuthRequest, res: Response) => {
     const user = req.user!;
     const { laptop_id } = req.params;
 
-    if (user.status !== "NORMAL") {
-      res.status(403).json({ error: "Only normal users can remove favorites" });
+    if (user.status !== "CUSTOMER") {
+      res.status(403).json({ error: "Only customers can remove favorites" });
       return;
     }
 

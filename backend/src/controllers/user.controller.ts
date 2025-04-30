@@ -26,7 +26,7 @@ export const register = async (req: Request<{}, {}, Prisma.userCreateInput>, res
         username,
         email,
         password: hashedPassword,
-        status: "NORMAL",
+        status: "CUSTOMER",
       },
     });
 

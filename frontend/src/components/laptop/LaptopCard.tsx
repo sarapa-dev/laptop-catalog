@@ -46,7 +46,7 @@ const LaptopCard = ({ laptop }: LaptopCardProps) => {
 
   return (
     <Card className="overflow-hidden relative">
-      {authUser?.status === "NORMAL" && (
+      {authUser?.status === "CUSTOMER" && (
         <button
           onClick={toggleFavorite}
           className="absolute top-2 right-2 cursor-pointer z-10 p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"

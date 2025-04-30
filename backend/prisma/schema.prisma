@@ -109,7 +109,7 @@ model user {
   username    String        @db.VarChar(45)
   email       String        @db.VarChar(45)
   password    String        @db.VarChar(256)
-  status      user_status   @default(NORMAL)
+  status      user_status   @default(CUSTOMER)
   favorite    favorite[]
   review      review[]
   transaction transaction[]
@@ -171,11 +171,6 @@ enum storage_type {
   SATA_SSD @map("SATA SSD")
 }
 
-enum user_status {
-  NORMAL
-  ADMIN
-}
-
 enum gpu_type {
   INTEGRATED
   DEDICATED
@@ -188,4 +183,9 @@ enum display_type {
   miniLED
   QD_OLED @map("QD-OLED")
   VA
+}
+
+enum user_status {
+  CUSTOMER
+  ADMIN
 }

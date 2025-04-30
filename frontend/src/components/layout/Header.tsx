@@ -89,12 +89,12 @@ const Header = () => {
                         <Link to="/add-laptop">Add Laptop</Link>
                       </DropdownMenuItem>
                     )}
-                    {authUser?.status === "NORMAL" && (
+                    {authUser?.status === "CUSTOMER" && (
                       <DropdownMenuItem>
                         <Link to="/transactions">Transactions</Link>
                       </DropdownMenuItem>
                     )}
-                    {authUser?.status === "NORMAL" && (
+                    {authUser?.status === "CUSTOMER" && (
                       <DropdownMenuItem>
                         <Link to="/favorites">Favorites</Link>
                       </DropdownMenuItem>

@@ -70,7 +70,7 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
     };
 
     let favoriteLaptopIds: number[] = [];
-    if (user?.status === "NORMAL") {
+    if (user?.status === "CUSTOMER") {
       const favorites = await prisma.favorite.findMany({
         where: { user_id: user.user_id },
         select: { laptop_id: true },
@@ -82,7 +82,7 @@ export const getAllLaptops = async (req: Request<{}, {}, {}, LaptopQueryParams>,
       laptops.map((laptop) => ({
         ...laptop,
         isFavorite:
-          user?.status === "NORMAL" ? favoriteLaptopIds.includes(laptop.laptop_id) : false,
+          user?.status === "CUSTOMER" ? favoriteLaptopIds.includes(laptop.laptop_id) : false,
       }));
 
     if (page && limit) {

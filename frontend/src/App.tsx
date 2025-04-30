@@ -51,15 +51,15 @@ const App = () => {
         />
         <Route
           path="/cart"
-          element={authUser?.status === "NORMAL" ? <CartPage /> : <Navigate to={"/"} />}
+          element={authUser?.status === "CUSTOMER" ? <CartPage /> : <Navigate to={"/"} />}
         />
         <Route
           path="/favorites"
-          element={authUser?.status === "NORMAL" ? <FavoritePage /> : <Navigate to={"/"} />}
+          element={authUser?.status === "CUSTOMER" ? <FavoritePage /> : <Navigate to={"/"} />}
         />
         <Route
           path="/transactions"
-          element={authUser?.status === "NORMAL" ? <TransactionPage /> : <Navigate to={"/"} />}
+          element={authUser?.status === "CUSTOMER" ? <TransactionPage /> : <Navigate to={"/"} />}
         />
       </Routes>
       <Toaster />

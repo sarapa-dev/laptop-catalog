@@ -3,5 +3,5 @@ export interface UserType {
   username: string;
   email: string;
   password: string;
-  status: "NORMAL" | "ADMIN";
+  status: "CUSTOMER" | "ADMIN";
 }
