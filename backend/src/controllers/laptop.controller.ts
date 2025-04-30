@@ -279,6 +279,7 @@ export const createLaptop = async (
   const {
     name,
     image_url,
+    price,
     category_id,
     display_id,
     gpu_id,
@@ -291,6 +292,7 @@ export const createLaptop = async (
     if (
       !name ||
       !image_url ||
+      !price ||
       !category_id ||
       !display_id ||
       !gpu_id ||
@@ -306,6 +308,7 @@ export const createLaptop = async (
       data: {
         name,
         image_url,
+        price,
         category: { connect: { category_id: category_id } },
         display: { connect: { display_id: display_id } },
         gpu: { connect: { gpu_id: gpu_id } },

@@ -19,6 +19,7 @@ import SelectField from "./SelectField";
 const formSchema = z.object({
   name: z.string().min(5, "Name must be at least 5 characters"),
   image_url: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  price: z.number().min(100, "Price must be at least 100 dollars"),
   manufacturer_id: z.number({
     required_error: "Please select a manufacturer",
   }),
@@ -52,6 +53,7 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
     defaultValues: {
       name: "",
       image_url: "",
+      price: 0,
     },
   });
 
@@ -113,6 +115,9 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
 
   const handleSubmit = async (values: FormValues) => {
     const formData = { ...values };
+
+    formData.price = Math.round(formData.price * 100);
+
     if (formData.image_url === "") {
       formData.image_url = undefined;
     }
@@ -145,6 +150,25 @@ const LaptopForm = ({ onSubmit, isSubmitting }: LaptopFormProps) => {
               <FormLabel>Image URL</FormLabel>
               <FormControl>
                 <Input placeholder="Enter image URL (optional)" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Price</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter laptop price"
+                  type="number"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
