@@ -21,7 +21,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const FRONTEND = process.env.FRONTEND_URL || "http://localhost:5173";
-const app = express();
+export const app = express();
 app.use("/api/stripe", stripeRoute);
 
 app.use(
