@@ -3,76 +3,76 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model category {
-  category_id Int      @id @default(autoincrement()) @db.UnsignedInt
-  name        String   @db.VarChar(45)
+  category_id Int      @id @default(autoincrement())
+  name        String
   laptop      laptop[]
 }
 
 model display {
-  display_id      Int          @id @default(autoincrement()) @db.UnsignedInt
-  manufacturer_id Int          @db.UnsignedInt
-  name            String       @db.VarChar(45)
+  display_id      Int          @id @default(autoincrement())
+  manufacturer_id Int
+  name            String
   size            Int
   width           Int
   height          Int
   type            display_type
-  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_display_manufacturer1")
+  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction)
   laptop          laptop[]
 
   @@index([manufacturer_id], map: "fk_display_manufacturer_id")
 }
 
 model gpu {
-  gpu_id          Int          @id @default(autoincrement()) @db.UnsignedInt
-  manufacturer_id Int          @db.UnsignedInt
-  name            String       @db.VarChar(45)
+  gpu_id          Int          @id @default(autoincrement())
+  manufacturer_id Int
+  name            String
   vram            Int
   tdp             Int
   type            gpu_type
-  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_gpu_manufacturer1")
+  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction)
   laptop          laptop[]
 
   @@index([manufacturer_id], map: "fk_gpu_manufacturer_id")
 }
 
 model laptop {
-  laptop_id        Int                @id @default(autoincrement()) @db.UnsignedInt
-  manufacturer_id  Int                @db.UnsignedInt
-  storage_id       Int                @db.UnsignedInt
-  processor_id     Int                @db.UnsignedInt
-  gpu_id           Int                @db.UnsignedInt
-  display_id       Int                @db.UnsignedInt
-  category_id      Int                @db.UnsignedInt
-  name             String             @db.VarChar(45)
-  image_url        String?            @db.VarChar(255)
-  price            Int?               @db.UnsignedInt
+  laptop_id        Int                @id @default(autoincrement())
+  manufacturer_id  Int
+  storage_id       Int
+  processor_id     Int
+  gpu_id           Int
+  display_id       Int
+  category_id      Int
+  name             String
+  image_url        String?
+  price            Int?
   favorite         favorite[]
-  category         category           @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_category1")
-  display          display            @relation(fields: [display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_display1")
-  gpu              gpu                @relation(fields: [gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_gpu1")
-  manufacturer     manufacturer       @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_manufacturer")
-  processor        processor          @relation(fields: [processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_processor1")
-  storage          storage            @relation(fields: [storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_laptop_storage1")
+  category         category           @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  display          display            @relation(fields: [display_id], references: [display_id], onDelete: NoAction, onUpdate: NoAction)
+  gpu              gpu                @relation(fields: [gpu_id], references: [gpu_id], onDelete: NoAction, onUpdate: NoAction)
+  manufacturer     manufacturer       @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction)
+  processor        processor          @relation(fields: [processor_id], references: [processor_id], onDelete: NoAction, onUpdate: NoAction)
+  storage          storage            @relation(fields: [storage_id], references: [storage_id], onDelete: NoAction, onUpdate: NoAction)
   review           review[]
   transaction_item transaction_item[]
 
-  @@index([category_id], map: "fk_laptop_category_id")
-  @@index([display_id], map: "fk_laptop_display_id")
-  @@index([gpu_id], map: "fk_laptop_gpu_id")
-  @@index([manufacturer_id], map: "fk_laptop_manufacturer_id")
-  @@index([processor_id], map: "fk_laptop_processor_id")
-  @@index([storage_id], map: "fk_laptop_storage_id")
+  @@index([category_id])
+  @@index([display_id])
+  @@index([gpu_id])
+  @@index([manufacturer_id])
+  @@index([processor_id])
+  @@index([storage_id])
 }
 
 model manufacturer {
-  manufacturer_id Int         @id @default(autoincrement()) @db.UnsignedInt
-  name            String      @db.VarChar(45)
-  description     String?     @db.Text
+  manufacturer_id Int         @id @default(autoincrement())
+  name            String
+  description     String?
   display         display[]
   gpu             gpu[]
   laptop          laptop[]
@@ -81,34 +81,34 @@ model manufacturer {
 }
 
 model processor {
-  processor_id       Int          @id @default(autoincrement()) @db.UnsignedInt
-  manufacturer_id    Int          @db.UnsignedInt
-  name               String       @db.VarChar(45)
+  processor_id       Int          @id @default(autoincrement())
+  manufacturer_id    Int
+  name               String
   core_count         Int
   tdp                Int
   hyper_thread_count Int?
   laptop             laptop[]
-  manufacturer       manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_processor_manufacturer1")
+  manufacturer       manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([manufacturer_id], map: "fk_processor_manufacturer_id")
+  @@index([manufacturer_id])
 }
 
 model storage {
-  storage_id      Int          @id @default(autoincrement()) @db.UnsignedInt
-  manufacturer_id Int          @db.UnsignedInt
-  name            String       @db.VarChar(45)
+  storage_id      Int          @id @default(autoincrement())
+  manufacturer_id Int
+  name            String
   type            storage_type
   laptop          laptop[]
-  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_storage_manufacturer1")
+  manufacturer    manufacturer @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([manufacturer_id], map: "fk_storage_manufacturer_id")
+  @@index([manufacturer_id])
 }
 
 model user {
-  user_id     Int           @id @default(autoincrement()) @db.UnsignedInt
-  username    String        @db.VarChar(45)
-  email       String        @db.VarChar(45)
-  password    String        @db.VarChar(256)
+  user_id     Int           @id @default(autoincrement())
+  username    String
+  email       String
+  password    String
   status      user_status   @default(CUSTOMER)
   favorite    favorite[]
   review      review[]
@@ -116,53 +116,53 @@ model user {
 }
 
 model favorite {
-  favorite_id Int    @id @default(autoincrement()) @db.UnsignedInt
-  user_id     Int    @db.UnsignedInt
-  laptop_id   Int    @db.UnsignedInt
-  laptop      laptop @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_favorite_laptop_id")
-  user        user   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_favorite_user_id")
+  favorite_id Int    @id @default(autoincrement())
+  user_id     Int
+  laptop_id   Int
+  laptop      laptop @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction)
+  user        user   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([laptop_id], map: "fk_favorite_laptop_id")
-  @@index([user_id], map: "fk_favorite_user_id")
+  @@index([laptop_id])
+  @@index([user_id])
 }
 
 model transaction {
-  transaction_id   Int                @id @default(autoincrement()) @db.UnsignedInt
-  user_id          Int                @db.UnsignedInt
+  transaction_id   Int                @id @default(autoincrement())
+  user_id          Int
   total_amount     Int
-  created_at       DateTime           @default(dbgenerated("(now())")) @db.DateTime(0)
-  user             user               @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_user_id")
+  created_at       DateTime           @default(now())
+  user             user               @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   transaction_item transaction_item[]
 
-  @@index([user_id], map: "fk_transaction_user_id")
+  @@index([user_id])
 }
 
 model transaction_item {
-  transaction_item_id Int         @id @default(autoincrement()) @db.UnsignedInt
-  transaction_id      Int         @db.UnsignedInt
-  laptop_id           Int         @db.UnsignedInt
+  transaction_item_id Int         @id @default(autoincrement())
+  transaction_id      Int
+  laptop_id           Int
   laptop_price        Int
-  laptop_name         String      @db.VarChar(255)
-  laptop_category     String      @db.VarChar(255)
-  laptop              laptop      @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_item_laptop_id")
-  transaction         transaction @relation(fields: [transaction_id], references: [transaction_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_transaction_item_transaction_id")
+  laptop_name         String
+  laptop_category     String
+  laptop              laptop      @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction)
+  transaction         transaction @relation(fields: [transaction_id], references: [transaction_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([laptop_id], map: "fk_transaction_item_laptop_id")
-  @@index([transaction_id], map: "fk_transaction_item_transaction_id")
+  @@index([laptop_id])
+  @@index([transaction_id])
 }
 
 model review {
-  review_id  Int      @id @default(autoincrement()) @db.UnsignedInt
-  user_id    Int      @db.UnsignedInt
-  laptop_id  Int      @db.UnsignedInt
-  rating     Int      @db.UnsignedInt
-  comment    String   @db.VarChar(255)
-  created_at DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
-  laptop     laptop   @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_laptop_id")
-  user       user     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_review_user_id")
+  review_id  Int      @id @default(autoincrement())
+  user_id    Int
+  laptop_id  Int
+  rating     Int
+  comment    String
+  created_at DateTime @default(now())
+  laptop     laptop   @relation(fields: [laptop_id], references: [laptop_id], onDelete: NoAction, onUpdate: NoAction)
+  user       user     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([laptop_id], map: "fk_review_laptop_id")
-  @@index([user_id], map: "fk_review_user_id")
+  @@index([laptop_id])
+  @@index([user_id])
 }
 
 enum storage_type {
