@@ -1,3 +1,7 @@
 node_modules
 # Keep environment variables out of version control
 .env
+
+# this files are related only for integration testing
+test.db
+migrations
